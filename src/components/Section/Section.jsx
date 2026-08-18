@@ -5,7 +5,6 @@ import styles from "./Section.module.css";
 
 function Section({ title, endpoint }) {
   const [albums, setAlbums] = useState([]);
-  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
     const fetchAlbums = async () => {
@@ -16,38 +15,33 @@ function Section({ title, endpoint }) {
 
         setAlbums(response.data);
       } catch (error) {
-        console.error(`Error fetching ${title}:`, error);
+        console.error(error);
       }
     };
 
     fetchAlbums();
-  }, [endpoint, title]);
+  }, [endpoint]);
 
   return (
     <section className={styles.section}>
       <div className={styles.header}>
         <h2>{title}</h2>
 
-        <button
-          className={styles.collapseButton}
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          {collapsed ? "Show All" : "Collapse"}
+        <button className={styles.collapseButton}>
+          {title === "Top Albums" ? "Collapse" : "Show All"}
         </button>
       </div>
 
-      {!collapsed && (
-        <div className={styles.grid}>
-          {albums.map((album) => (
-            <Card
-              key={album.id}
-              image={album.image}
-              follows={album.follows}
-              title={album.title}
-            />
-          ))}
-        </div>
-      )}
+      <div className={styles.grid}>
+        {albums.map((album) => (
+          <Card
+            key={album.id}
+            image={album.image}
+            follows={album.follows}
+            title={album.title}
+          />
+        ))}
+      </div>
     </section>
   );
 }
