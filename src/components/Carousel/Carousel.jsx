@@ -43,7 +43,7 @@ function Carousel({ data, renderComponent }) {
         onSlideChange={updateNavigation}
         onResize={updateNavigation}
         spaceBetween={24}
-        slidesPerView={7}
+        slidesPerView={6}
         breakpoints={{
           320: {
             slidesPerView: 2,
@@ -61,7 +61,7 @@ function Carousel({ data, renderComponent }) {
             slidesPerView: 6,
           },
           1440: {
-            slidesPerView: 7,
+            slidesPerView: 6,
           },
         }}
       >

@@ -28,7 +28,44 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(7, 160px);
-  column-gap: 24px;
-  row-gap: 24px;
+  grid-template-columns: repeat(6, 160px);
+  justify-content: space-between;
+}
+
+/* 1200px and below */
+@media (max-width: 1199px) {
+  .grid {
+    grid-template-columns: repeat(5, 160px);
+  }
+}
+
+/* 1024px and below */
+@media (max-width: 1023px) {
+  .grid {
+    grid-template-columns: repeat(4, 160px);
+  }
+}
+
+/* 768px and below */
+@media (max-width: 767px) {
+  /* .section {
+    padding: 32px 24px;
+  } */
+
+  .grid {
+    grid-template-columns: repeat(3, 160px);
+  }
+}
+
+/* 480px and below */
+@media (max-width: 479px) {
+  /* .section {
+    padding: 24px 16px;
+  } */
+
+  .grid {
+    grid-template-columns: repeat(2, 160px);
+    /* column-gap: 16px;
+    row-gap: 24px; */
+  }
 }
