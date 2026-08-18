@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
 import Card from "../Card/Card";
+import Carousel from "../Carousel/Carousel";
+
 import styles from "./Section.module.css";
 
 function Section({ title, endpoint }) {
   const [albums, setAlbums] = useState([]);
+  const [showCarousel, setShowCarousel] = useState(false);
 
   useEffect(() => {
     const fetchAlbums = async () => {
@@ -15,33 +19,53 @@ function Section({ title, endpoint }) {
 
         setAlbums(response.data);
       } catch (error) {
-        console.error(error);
+        console.error(`Error fetching ${title}:`, error);
       }
     };
 
     fetchAlbums();
-  }, [endpoint]);
+  }, [endpoint, title]);
+
+  const handleToggle = () => {
+    setShowCarousel((prev) => !prev);
+  };
 
   return (
     <section className={styles.section}>
       <div className={styles.header}>
         <h2>{title}</h2>
 
-        <button className={styles.collapseButton}>
-          {title === "Top Albums" ? "Collapse" : "Show All"}
+        <button
+          className={styles.collapseButton}
+          onClick={handleToggle}
+        >
+          {showCarousel ? "Show All" : "Collapse"}
         </button>
       </div>
 
-      <div className={styles.grid}>
-        {albums.map((album) => (
-          <Card
-            key={album.id}
-            image={album.image}
-            follows={album.follows}
-            title={album.title}
-          />
-        ))}
-      </div>
+      {showCarousel ? (
+        <Carousel
+          data={albums}
+          renderComponent={(album) => (
+            <Card
+              image={album.image}
+              follows={album.follows}
+              title={album.title}
+            />
+          )}
+        />
+      ) : (
+        <div className={styles.grid}>
+          {albums.map((album) => (
+            <Card
+              key={album.id}
+              image={album.image}
+              follows={album.follows}
+              title={album.title}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
