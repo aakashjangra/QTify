@@ -12,11 +12,20 @@ function App() {
       <Section
         title="Top Albums"
         endpoint="/albums/top"
+        showAll
       />
 
       <Section
         title="New Albums"
         endpoint="/albums/new"
+        showAll
+      />
+
+      <Section
+        title="Songs"
+        endpoint="/songs"
+        showAll={false}
+        isSongSection
       />
     </>
   );
