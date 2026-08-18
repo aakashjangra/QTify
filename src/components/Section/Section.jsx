@@ -8,7 +8,7 @@ import styles from "./Section.module.css";
 
 function Section({ title, endpoint }) {
   const [albums, setAlbums] = useState([]);
-  const [showCarousel, setShowCarousel] = useState(false);
+  const [showCarousel, setShowCarousel] = useState(true);
 
   useEffect(() => {
     const fetchAlbums = async () => {

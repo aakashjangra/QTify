@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
@@ -14,31 +14,34 @@ function Carousel({ data, renderComponent }) {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
-  const handleSwiper = (swiper) => {
-    swiperRef.current = swiper;
-
-    setIsBeginning(swiper.isBeginning);
-    setIsEnd(swiper.isEnd);
-  };
-
   const updateNavigation = (swiper) => {
     setIsBeginning(swiper.isBeginning);
     setIsEnd(swiper.isEnd);
   };
 
+  useEffect(() => {
+    if (!swiperRef.current || data.length === 0) {
+      return;
+    }
+
+    // Recalculate Swiper after API data has been rendered
+    swiperRef.current.update();
+
+    updateNavigation(swiperRef.current);
+  }, [data.length]);
+
   return (
     <div className={styles.carousel}>
-      {!isBeginning && (
-        <LeftArrow
-          onClick={() => swiperRef.current?.slidePrev()}
-        />
-      )}
-
       <Swiper
-        onSwiper={handleSwiper}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+
+          if (data.length > 0) {
+            updateNavigation(swiper);
+          }
+        }}
         onSlideChange={updateNavigation}
-        onReachBeginning={updateNavigation}
-        onReachEnd={updateNavigation}
+        onResize={updateNavigation}
         spaceBetween={24}
         slidesPerView={7}
         breakpoints={{
@@ -68,6 +71,12 @@ function Carousel({ data, renderComponent }) {
           </SwiperSlide>
         ))}
       </Swiper>
+
+      {!isBeginning && (
+        <LeftArrow
+          onClick={() => swiperRef.current?.slidePrev()}
+        />
+      )}
 
       {!isEnd && (
         <RightArrow
