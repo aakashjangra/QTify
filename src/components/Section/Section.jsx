@@ -3,7 +3,7 @@ import axios from "axios";
 import Card from "../Card/Card";
 import styles from "./Section.module.css";
 
-function Section() {
+function Section({ title, endpoint }) {
   const [albums, setAlbums] = useState([]);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -11,28 +11,28 @@ function Section() {
     const fetchAlbums = async () => {
       try {
         const response = await axios.get(
-          "https://qtify-backend.labs.crio.do/albums/top"
+          `https://qtify-backend.labs.crio.do${endpoint}`
         );
 
         setAlbums(response.data);
       } catch (error) {
-        console.error("Error fetching albums:", error);
+        console.error(`Error fetching ${title}:`, error);
       }
     };
 
     fetchAlbums();
-  }, []);
+  }, [endpoint, title]);
 
   return (
     <section className={styles.section}>
       <div className={styles.header}>
-        <h2>Top Albums</h2>
+        <h2>{title}</h2>
 
         <button
           className={styles.collapseButton}
           onClick={() => setCollapsed(!collapsed)}
         >
-          {collapsed ? "Expand" : "Collapse"}
+          {collapsed ? "Show All" : "Collapse"}
         </button>
       </div>
 
